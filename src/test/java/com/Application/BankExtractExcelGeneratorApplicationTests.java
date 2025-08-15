@@ -1,10 +1,10 @@
-package com.firstProject;
+package com.Application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApplicationTests {
+class BankExtractExcelGeneratorApplicationTests {
 
 	@Test
 	void contextLoads() {
