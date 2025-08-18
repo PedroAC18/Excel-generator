@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("api/extract")
@@ -31,16 +33,12 @@ public class ExtractController {
             @ApiResponse(responseCode = "500", description = "Error processing file")
     })
     public ResponseEntity<String> uploadExtractPdfFile(@RequestParam("pdfFile") @Parameter(required = true)
-            MultipartFile pdfFile) {
-        try {
-            File tempFile = File.createTempFile("temp", ".pdf");
-            pdfFile.transferTo(tempFile);
+                                                       MultipartFile pdfFile) throws IOException, ParseException {
+        File tempFile = File.createTempFile("temp", ".pdf");
+        pdfFile.transferTo(tempFile);
 
-            uploadPdf.execute(tempFile);
-            return ResponseEntity.ok("Upload success");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error processing file: " + e.getMessage());
-        }
+        uploadPdf.execute(tempFile);
+        return ResponseEntity.ok("Upload success");
+
     }
 }

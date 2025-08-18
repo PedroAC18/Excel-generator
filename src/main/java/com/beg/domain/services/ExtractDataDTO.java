@@ -1,5 +1,4 @@
-package com.beg.domain.entities;
-
+package com.beg.domain.services;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Extract {
+public class ExtractDataDTO {
     private LocalDate date;
     private String info;
     private Double amount;
