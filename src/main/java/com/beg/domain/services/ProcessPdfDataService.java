@@ -50,7 +50,7 @@ public class ProcessPdfDataService {
 
     private List<String> filterPdfRows(String[] pdfRows) {
         return Arrays.stream(pdfRows).filter(
-                row -> Character.isDigit(row.charAt(0))
+                row -> ( Character.isDigit(row.charAt(0)))
         ).toList();
     }
 
@@ -60,6 +60,9 @@ public class ProcessPdfDataService {
             ExtractDataDTO extractData = new ExtractDataDTO();
 
             String dateString = extractInfo.substring(0, 10);
+            if (!dateString.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                continue;
+            }
             LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern(DATA_FORMATTER));
             extractData.setDate(date);
 

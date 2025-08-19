@@ -1,9 +1,9 @@
 package com.beg.domain.repository;
 
-import com.beg.domain.services.ExtractDataDTO;
+import com.beg.domain.entities.Extract;
 
 import java.util.List;
 
 public interface IExtractRepositoryDatabase {
-    void saveAllExtracts(List<ExtractDataDTO> extractDataList);
+    void saveAllExtracts(List<Extract> extractList);
 }

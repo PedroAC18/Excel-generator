@@ -1,5 +1,6 @@
 package com.beg.domain.usecases;
 
+import com.beg.domain.entities.Extract;
 import com.beg.domain.repository.IExtractRepositoryDatabase;
 import com.beg.domain.services.ExtractDataDTO;
 import com.beg.domain.services.ProcessPdfDataService;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystemException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,7 +33,8 @@ public class UploadExtractPdf {
 
         if (isPdf(extractFile)) {
             List<ExtractDataDTO> pdfExtractProcessed = pdfDataService.execute(extractFile);
-            extractRepositoryDatabase.saveAllExtracts(pdfExtractProcessed);
+            List<Extract> extractList = buildExtract(pdfExtractProcessed);
+            extractRepositoryDatabase.saveAllExtracts(extractList);
         } else {
             throw new BadRequestException(INVALID_EXTENSION);
         }
@@ -43,6 +46,23 @@ public class UploadExtractPdf {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    private List<Extract> buildExtract(List<ExtractDataDTO> pdfExtractProcessed) {
+        List<Extract> extractList = new ArrayList<>();
+        for (ExtractDataDTO dto : pdfExtractProcessed) {
+            Extract extract = new Extract();
+            extract.setDate(dto.getDate());
+            extract.setInfo(dto.getInfo());
+
+            if (dto.getBalance() != null) {
+                extract.setBalance(dto.getBalance());
+            } else {
+                extract.setAmount(dto.getAmount());
+            }
+            extractList.add(extract);
+        }
+        return extractList;
     }
 
 
