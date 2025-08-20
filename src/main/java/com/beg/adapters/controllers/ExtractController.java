@@ -1,30 +1,31 @@
 package com.beg.adapters.controllers;
 
-import com.beg.domain.usecases.UploadExtractPdf;
+import com.beg.domain.usecases.findAll.ExtractOutputDTO;
+import com.beg.domain.usecases.findAll.FindAllExtract;
+import com.beg.domain.usecases.upload.UploadExtractPdf;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/extract")
 public class ExtractController {
 
     private UploadExtractPdf uploadPdf;
+    private FindAllExtract findAllExtract;
 
-    public ExtractController(UploadExtractPdf uploadExtractPdf) {
+    public ExtractController(UploadExtractPdf uploadExtractPdf, FindAllExtract findAllExtract) {
         this.uploadPdf = uploadExtractPdf;
+        this.findAllExtract = findAllExtract;
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -40,5 +41,14 @@ public class ExtractController {
         uploadPdf.execute(tempFile);
         return ResponseEntity.ok("Upload success");
 
+    }
+
+    @GetMapping(value = "/findAll")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All data returned"),
+            @ApiResponse(responseCode = "500", description = "Error finding data")
+    })
+    public List<ExtractOutputDTO> findAllExtract() {
+        return findAllExtract.execute();
     }
 }

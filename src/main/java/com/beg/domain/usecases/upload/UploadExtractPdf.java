@@ -1,4 +1,4 @@
-package com.beg.domain.usecases;
+package com.beg.domain.usecases.upload;
 
 import com.beg.domain.entities.Extract;
 import com.beg.domain.repository.IExtractRepositoryDatabase;

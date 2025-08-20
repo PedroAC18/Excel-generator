@@ -4,6 +4,7 @@ import com.beg.adapters.repository.springbootdata.IExtractRepositoryJPA;
 import com.beg.adapters.repository.springbootdata.model.ExtractModelJPA;
 import com.beg.domain.entities.Extract;
 import com.beg.domain.repository.IExtractRepositoryDatabase;
+import com.beg.domain.usecases.findAll.ExtractOutputDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -40,5 +41,30 @@ public class ExtractRepositoryDatabase implements IExtractRepositoryDatabase {
         }
 
         return extractModelJPAList;
+    }
+
+    @Override
+    public List<ExtractOutputDTO> findAll() {
+        List<ExtractModelJPA> modelJpaList = extractRepositoryJPA.findAll();
+        return buildExtractOutputDto(modelJpaList);
+    }
+
+    private List<ExtractOutputDTO> buildExtractOutputDto(List<ExtractModelJPA> modelJpaList) {
+        List<ExtractOutputDTO> outputDTOList = new ArrayList<>();
+
+        for(ExtractModelJPA jpa : modelJpaList) {
+            ExtractOutputDTO dto = new ExtractOutputDTO();
+            dto.setDate(jpa.getDate());
+            dto.setInfo(jpa.getInfo());
+
+            if (jpa.getBalance() != null) {
+                dto.setBalance(jpa.getBalance());
+            } else {
+                dto.setAmount(jpa.getAmount());
+            }
+            outputDTOList.add(dto);
+        }
+
+        return outputDTOList;
     }
 }
