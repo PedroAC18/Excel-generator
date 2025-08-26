@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public class FindAllExtract {
 
-    private IExtractRepositoryDatabase extractRepositoryDatabase;
+    private final IExtractRepositoryDatabase extractRepositoryDatabase;
 
     public FindAllExtract(IExtractRepositoryDatabase iExtractRepositoryDatabase) {
         this.extractRepositoryDatabase = iExtractRepositoryDatabase;
