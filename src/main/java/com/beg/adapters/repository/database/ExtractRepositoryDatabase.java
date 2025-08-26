@@ -5,8 +5,10 @@ import com.beg.adapters.repository.springbootdata.model.ExtractModelJPA;
 import com.beg.domain.entities.Extract;
 import com.beg.domain.repository.IExtractRepositoryDatabase;
 import com.beg.domain.usecases.findAll.ExtractOutputDTO;
+import com.beg.domain.usecases.findByPeriod.ExtractByPeriodOutputDTO;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +54,33 @@ public class ExtractRepositoryDatabase implements IExtractRepositoryDatabase {
     private List<ExtractOutputDTO> buildExtractOutputDto(List<ExtractModelJPA> modelJpaList) {
         List<ExtractOutputDTO> outputDTOList = new ArrayList<>();
 
-        for(ExtractModelJPA jpa : modelJpaList) {
+        for (ExtractModelJPA jpa : modelJpaList) {
             ExtractOutputDTO dto = new ExtractOutputDTO();
+            dto.setDate(jpa.getDate());
+            dto.setInfo(jpa.getInfo());
+
+            if (jpa.getBalance() != null) {
+                dto.setBalance(jpa.getBalance());
+            } else {
+                dto.setAmount(jpa.getAmount());
+            }
+            outputDTOList.add(dto);
+        }
+
+        return outputDTOList;
+    }
+
+    @Override
+    public List<ExtractByPeriodOutputDTO> findByPeriod(LocalDate initialDate, LocalDate finalDate) {
+        List<ExtractModelJPA> modelJPAList = extractRepositoryJPA.findByPeriod(initialDate, finalDate);
+        return buildExtractByDateOutputDTO(modelJPAList);
+    }
+
+    private List<ExtractByPeriodOutputDTO> buildExtractByDateOutputDTO(List<ExtractModelJPA> modelJPAList) {
+        List<ExtractByPeriodOutputDTO> outputDTOList = new ArrayList<>();
+
+        for (ExtractModelJPA jpa : modelJPAList) {
+            ExtractByPeriodOutputDTO dto = new ExtractByPeriodOutputDTO();
             dto.setDate(jpa.getDate());
             dto.setInfo(jpa.getInfo());
 
