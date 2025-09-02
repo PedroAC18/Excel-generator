@@ -1,4 +1,4 @@
-package com.beg.domain.services;
+package com.beg.domain.services.processPdfData;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

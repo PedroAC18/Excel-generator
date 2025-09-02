@@ -5,7 +5,7 @@ import com.beg.adapters.repository.springbootdata.model.ExtractModelJPA;
 import com.beg.domain.entities.Extract;
 import com.beg.domain.repository.IExtractRepositoryDatabase;
 import com.beg.domain.usecases.findAll.ExtractOutputDTO;
-import com.beg.domain.usecases.findByPeriod.ExtractByPeriodOutputDTO;
+import com.beg.domain.services.findByPeriod.ExtractByPeriodOutputDTO;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;

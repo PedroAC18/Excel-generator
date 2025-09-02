@@ -1,8 +1,8 @@
 package com.beg.domain.usecases;
 
 import com.beg.domain.repository.IExtractRepositoryDatabase;
-import com.beg.domain.services.ExtractDataDTO;
-import com.beg.domain.services.ProcessPdfDataService;
+import com.beg.domain.services.processPdfData.ExtractDataDTO;
+import com.beg.domain.services.processPdfData.ProcessPdfDataService;
 import com.beg.domain.usecases.upload.UploadExtractPdf;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;

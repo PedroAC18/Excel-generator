@@ -1,11 +1,10 @@
-package com.beg.domain.usecases.findByPeriod;
+package com.beg.domain.services.findByPeriod;
 
 import com.beg.domain.repository.IExtractRepositoryDatabase;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

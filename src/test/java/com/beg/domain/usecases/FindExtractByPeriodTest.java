@@ -1,8 +1,8 @@
 package com.beg.domain.usecases;
 
 import com.beg.domain.repository.IExtractRepositoryDatabase;
-import com.beg.domain.usecases.findByPeriod.ExtractByPeriodOutputDTO;
-import com.beg.domain.usecases.findByPeriod.FindExtractByPeriod;
+import com.beg.domain.services.findByPeriod.ExtractByPeriodOutputDTO;
+import com.beg.domain.services.findByPeriod.FindExtractByPeriod;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

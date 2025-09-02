@@ -2,8 +2,8 @@ package com.beg.adapters.controllers;
 
 import com.beg.domain.usecases.findAll.ExtractOutputDTO;
 import com.beg.domain.usecases.findAll.FindAllExtract;
-import com.beg.domain.usecases.findByPeriod.ExtractByPeriodOutputDTO;
-import com.beg.domain.usecases.findByPeriod.FindExtractByPeriod;
+import com.beg.domain.services.findByPeriod.ExtractByPeriodOutputDTO;
+import com.beg.domain.services.findByPeriod.FindExtractByPeriod;
 import com.beg.domain.usecases.upload.UploadExtractPdf;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

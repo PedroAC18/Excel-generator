@@ -1,5 +1,7 @@
 package com.beg.domain.services;
 
+import com.beg.domain.services.processPdfData.ExtractDataDTO;
+import com.beg.domain.services.processPdfData.ProcessPdfDataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

@@ -2,7 +2,7 @@ package com.beg.domain.repository;
 
 import com.beg.domain.entities.Extract;
 import com.beg.domain.usecases.findAll.ExtractOutputDTO;
-import com.beg.domain.usecases.findByPeriod.ExtractByPeriodOutputDTO;
+import com.beg.domain.services.findByPeriod.ExtractByPeriodOutputDTO;
 
 import java.time.LocalDate;
 import java.util.List;

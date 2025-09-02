@@ -2,8 +2,8 @@ package com.beg.domain.usecases.upload;
 
 import com.beg.domain.entities.Extract;
 import com.beg.domain.repository.IExtractRepositoryDatabase;
-import com.beg.domain.services.ExtractDataDTO;
-import com.beg.domain.services.ProcessPdfDataService;
+import com.beg.domain.services.processPdfData.ExtractDataDTO;
+import com.beg.domain.services.processPdfData.ProcessPdfDataService;
 import org.apache.coyote.BadRequestException;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;

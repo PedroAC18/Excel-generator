@@ -1,4 +1,4 @@
-package com.beg.domain.usecases.findByPeriod;
+package com.beg.domain.services.findByPeriod;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
