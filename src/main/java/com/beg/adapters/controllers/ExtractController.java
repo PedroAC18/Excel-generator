@@ -1,5 +1,6 @@
 package com.beg.adapters.controllers;
 
+import com.beg.domain.usecases.createExcel.CreateExtractExcel;
 import com.beg.domain.usecases.findAll.ExtractOutputDTO;
 import com.beg.domain.usecases.findAll.FindAllExtract;
 import com.beg.domain.services.findByPeriod.ExtractByPeriodOutputDTO;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -27,11 +30,14 @@ public class ExtractController {
     private final UploadExtractPdf uploadPdf;
     private final FindAllExtract findAllExtract;
     private final FindExtractByPeriod findExtractByPeriod;
+    private final CreateExtractExcel createExtractExcel;
 
-    public ExtractController(UploadExtractPdf uploadExtractPdf, FindAllExtract findAllExtract, FindExtractByPeriod findExtractByPeriod) {
+    public ExtractController(UploadExtractPdf uploadExtractPdf, FindAllExtract findAllExtract, FindExtractByPeriod findExtractByPeriod,
+                             CreateExtractExcel createExtractExcel) {
         this.uploadPdf = uploadExtractPdf;
         this.findAllExtract = findAllExtract;
         this.findExtractByPeriod = findExtractByPeriod;
+        this.createExtractExcel = createExtractExcel;
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -61,11 +67,30 @@ public class ExtractController {
     @GetMapping(value = "/findByPeriod")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All data returned"),
-            @ApiResponse(responseCode = "$00", description = "Final date cannot be previous than initial date"),
+            @ApiResponse(responseCode = "400", description = "Final date cannot be previous than initial date"),
             @ApiResponse(responseCode = "500", description = "Error finding data")
     })
     public List<ExtractByPeriodOutputDTO> findByPeriod(@RequestParam("initialDate") @Parameter(required = true) LocalDate initialDate,
                                                        @RequestParam("finalDate") @Parameter(required = true) LocalDate finalDate) throws BadRequestException {
         return findExtractByPeriod.execute(initialDate, finalDate);
+    }
+
+    @GetMapping(value = "/generateExtractExcel")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Excel generated correctly"),
+            @ApiResponse(responseCode = "400", description = "Final date cannot be previous than initial date"),
+            @ApiResponse(responseCode = "500", description = "Error finding data")
+    })
+    public ResponseEntity<byte[]> createExtractExcel(@RequestParam("initialDate") @Parameter(required = true) LocalDate initialDate,
+                                     @RequestParam("finalDate") @Parameter(required = true) LocalDate finalDate) throws BadRequestException {
+        byte[] excelFile = createExtractExcel.execute(initialDate, finalDate);
+
+        String filename = "extrato_" + initialDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) +
+                "_" + finalDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + ".xlsx";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(excelFile);
     }
 }

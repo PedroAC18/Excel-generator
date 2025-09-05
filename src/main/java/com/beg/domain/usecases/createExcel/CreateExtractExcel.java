@@ -4,7 +4,9 @@ import com.beg.domain.services.findByPeriod.ExtractByPeriodOutputDTO;
 import com.beg.domain.services.findByPeriod.FindExtractByPeriod;
 import org.apache.coyote.BadRequestException;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Service
 public class CreateExtractExcel {
 
     private static final String[] HEADERS = {"Data", "Informação", "Valor", "Saldo"};
@@ -32,15 +35,27 @@ public class CreateExtractExcel {
             CellStyle headerStyle = createHeaderStyle(workbook);
             CellStyle dateStyle = createDateStyle(workbook);
             CellStyle currencyStyle = createCurrencyStyle(workbook);
+            CellStyle periodStyle = createPeriodStyle(workbook);
 
-            Row headerRow = sheet.createRow(0);
+            // Adiciona a linha do período como primeira linha
+            Row periodRow = sheet.createRow(0);
+            Cell periodCell = periodRow.createCell(0);
+            periodCell.setCellValue("Período: " + initialDate.format(DATE_FORMATTER) +
+                    " a " + finalDate.format(DATE_FORMATTER));
+            periodCell.setCellStyle(periodStyle);
+            // Mescla as células para o período ocupar toda a largura
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, HEADERS.length - 1));
+
+            // Linha de cabeçalho agora é a segunda linha
+            Row headerRow = sheet.createRow(1);
             for (int i = 0; i < HEADERS.length; i++) {
                 Cell cell = headerRow.createCell(i);
                 cell.setCellValue(HEADERS[i]);
                 cell.setCellStyle(headerStyle);
             }
 
-            int rowNum = 1;
+            // Dados começam na terceira linha
+            int rowNum = 2;
             for (ExtractByPeriodOutputDTO extract : extractData) {
                 Row row = sheet.createRow(rowNum++);
 
@@ -67,11 +82,6 @@ public class CreateExtractExcel {
             for (int i = 0; i < HEADERS.length; i++) {
                 sheet.autoSizeColumn(i);
             }
-
-            Row footerRow = sheet.createRow(rowNum + 1);
-            Cell footerCell = footerRow.createCell(0);
-            footerCell.setCellValue("Período: " + initialDate.format(DATE_FORMATTER) +
-                    " a " + finalDate.format(DATE_FORMATTER));
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             workbook.write(outputStream);
@@ -105,6 +115,16 @@ public class CreateExtractExcel {
     private CellStyle createCurrencyStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         style.setDataFormat(workbook.createDataFormat().getFormat("#,##0.00"));
+        return style;
+    }
+
+    private CellStyle createPeriodStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 12);
+        style.setFont(font);
+        style.setAlignment(HorizontalAlignment.CENTER);
         return style;
     }
 }

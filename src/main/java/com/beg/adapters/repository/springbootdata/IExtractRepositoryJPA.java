@@ -13,6 +13,7 @@ public interface IExtractRepositoryJPA extends JpaRepository<ExtractModelJPA, Lo
     @Query("SELECT e " +
             "FROM ExtractModelJPA e " +
             "WHERE e.date >= :initialDate " +
-            "AND e.date <= :finalDate")
+            "AND e.date <= :finalDate " +
+            "ORDER BY e.date")
     List<ExtractModelJPA> findByPeriod(@Param("initialDate") LocalDate initalDate, @Param("finalDate") LocalDate finalDate);
 }
