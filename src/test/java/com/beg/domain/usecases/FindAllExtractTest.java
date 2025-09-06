@@ -4,10 +4,8 @@ import com.beg.domain.repository.IExtractRepositoryDatabase;
 import com.beg.domain.usecases.findAll.ExtractOutputDTO;
 import com.beg.domain.usecases.findAll.FindAllExtract;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -35,7 +34,6 @@ public class FindAllExtractTest {
     }
 
     @Test
-    @DisplayName("Should return a list of extracts when repository has data")
     void shouldReturnListOfExtracts() {
         List<ExtractOutputDTO> extractList = new ArrayList();
 
@@ -64,7 +62,6 @@ public class FindAllExtractTest {
     }
 
     @Test
-    @DisplayName("Should return an empty list when repository has no data")
     void shouldReturnEmptyList() {
         List<ExtractOutputDTO> emptyList = Collections.emptyList();
         when(extractRepositoryDatabase.findAll()).thenReturn(emptyList);
@@ -77,7 +74,6 @@ public class FindAllExtractTest {
     }
 
     @Test
-    @DisplayName("Should pass through any exception thrown by the repository")
     void shouldPassThroughExceptions() {
         when(extractRepositoryDatabase.findAll()).thenThrow(new RuntimeException("Database error"));
 
